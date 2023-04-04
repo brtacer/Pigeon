@@ -10,6 +10,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+security:
+    secretKey: ${secretkey}
+    issuer: ${issuer}
 
 
 

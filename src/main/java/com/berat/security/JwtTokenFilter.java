@@ -31,6 +31,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (id.isEmpty())
                 throw new PigeonManagerException(ErrorType.INVALID_TOKEN);
             UserDetails userDetails = jwtUserDetails.loadUserById(id.get());
+            if (!userDetails.isAccountNonLocked())
+                throw new PigeonManagerException(ErrorType.INVALID_TOKEN);
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

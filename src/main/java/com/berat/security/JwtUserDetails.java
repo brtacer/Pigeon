@@ -1,6 +1,7 @@
 package com.berat.security;
 
 import com.berat.model.UserProfile;
+import com.berat.model.UserProfileStatus;
 import com.berat.service.UserProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,11 +30,12 @@ public class JwtUserDetails implements UserDetailsService {
             return null;
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("User"));
+        boolean status = userProfile.get().getStatus().equals(UserProfileStatus.BLOCKED) ? true : false;
         return User.builder()
                 .username(userProfile.get().getUsername())
                 .password("")
                 .accountExpired(false)
-                .accountLocked(false)
+                .accountLocked(status)
                 .authorities(authorities)
                 .build();
     }

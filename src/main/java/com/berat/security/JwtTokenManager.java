@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.berat.exception.ErrorType;
 import com.berat.exception.PigeonManagerException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -14,8 +15,10 @@ import java.util.Optional;
 @Component
 public class JwtTokenManager {
 
-    private String secretKey = "1234";
-    private String issuer = "berat";
+    @Value("${security.secretKey}")
+    private String secretKey;
+    @Value("${security.issuer}")
+    private String issuer;
 
     public Optional<String> createToken(Long id){
         String token=null;

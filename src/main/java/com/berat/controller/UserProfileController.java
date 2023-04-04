@@ -3,6 +3,7 @@ import com.berat.dto.request.UpdatePasswordRequestDto;
 import com.berat.dto.request.UpdateProfileRequestDto;
 import com.berat.dto.request.UserProfileLoginRequestDto;
 import com.berat.dto.request.UserProfileRegisterRequestDto;
+import com.berat.dto.response.AuthResponseDto;
 import com.berat.dto.response.ProfileResponseDto;
 import com.berat.dto.response.UserResponseDto;
 import com.berat.exception.ErrorType;
@@ -24,16 +25,14 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
     @PostMapping(REGISTER)
-    public ResponseEntity<Void> register(@RequestBody @Valid UserProfileRegisterRequestDto dto){
+    public ResponseEntity<AuthResponseDto> register(@RequestBody @Valid UserProfileRegisterRequestDto dto){
         if (!dto.getPassword().equals(dto.getRePassword()))
             throw new PigeonManagerException(ErrorType.PASSWORD_NOT_MATCH);
-        userProfileService.register(dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userProfileService.register(dto));
     }
     @PostMapping(LOGIN)
-    public ResponseEntity<Void> login(@RequestBody @Valid UserProfileLoginRequestDto dto){
-        userProfileService.login(dto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid UserProfileLoginRequestDto dto){
+        return ResponseEntity.ok(userProfileService.login(dto));
     }
     @GetMapping(GETALL+ POST_SHARE +BYPOSTID)
     public ResponseEntity<Page<UserResponseDto>> getAllSharedByPostId(@PathVariable Long postId,

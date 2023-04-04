@@ -19,6 +19,7 @@ public enum ErrorType {
     INVALID_FORMAT(1005,"Format not valid!",BAD_REQUEST),
     MISSING_PATH_VARIABLE(1006,"Path variable missing!",BAD_REQUEST),
     METHOD_ARGUMENT_TYPE_MISMATCH(1007,"Method argument type mismatch!",BAD_REQUEST),
+    TOKEN_NOT_CREATED(1007,"Token not created!",BAD_REQUEST),
 
     PASSWORD_NOT_MATCH(1100,"Password and rePassword not match",BAD_REQUEST),
     USERNAME_ALREADY_EXIST(1101,"Username already exist!",BAD_REQUEST),

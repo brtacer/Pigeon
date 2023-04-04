@@ -1,6 +1,7 @@
 package com.berat.converter;
 
 import com.berat.dto.request.UserProfileRegisterRequestDto;
+import com.berat.dto.response.AuthResponseDto;
 import com.berat.dto.response.ProfileResponseDto;
 import com.berat.dto.response.UserResponseDto;
 import com.berat.model.Location;
@@ -36,5 +37,8 @@ public class UserProfileConverter {
                 .location(userProfile.getLocation())
                 .website(userProfile.getWebsite())
                 .build();
+    }
+    public static AuthResponseDto toAuthResponseDto(Long id,String token){
+        return AuthResponseDto.builder().id(id).token(token).build();
     }
 }

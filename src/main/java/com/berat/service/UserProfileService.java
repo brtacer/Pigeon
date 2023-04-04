@@ -7,6 +7,7 @@ import com.berat.dto.request.UpdatePasswordRequestDto;
 import com.berat.dto.request.UpdateProfileRequestDto;
 import com.berat.dto.request.UserProfileLoginRequestDto;
 import com.berat.dto.request.UserProfileRegisterRequestDto;
+import com.berat.dto.response.AuthResponseDto;
 import com.berat.dto.response.ProfileResponseDto;
 import com.berat.dto.response.UserResponseDto;
 import com.berat.exception.ErrorType;
@@ -34,19 +35,26 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         this.jwtTokenManager = jwtTokenManager;
     }
 
-    public UserProfile register(UserProfileRegisterRequestDto dto) {
+    public AuthResponseDto register(UserProfileRegisterRequestDto dto) {
         if (userProfileRepository.existsByUsername(dto.getUsername()))
             throw new PigeonManagerException(ErrorType.USERNAME_ALREADY_EXIST);
         if (userProfileRepository.existsByEmail(dto.getEmail()))
             throw new PigeonManagerException(ErrorType.EMAIL_ALREADY_EXIST);
-        return save(toUserProfile(dto));
+        UserProfile user = save(toUserProfile(dto));
+        Optional<String> token = jwtTokenManager.createToken(user.getId());
+        if (token.isEmpty())
+            throw new PigeonManagerException(ErrorType.TOKEN_NOT_CREATED);
+        return toAuthResponseDto(user.getId(),token.get());
     }
-    public void login(UserProfileLoginRequestDto dto) {
+    public AuthResponseDto login(UserProfileLoginRequestDto dto) {
         Optional<UserProfile> userProfile =
                 userProfileRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword());
         if (userProfile.isEmpty())
             throw new PigeonManagerException(ErrorType.INCORRECT_USERNAME_OR_PASSWORD);
-        jwtTokenManager.createToken(userProfile.get().getId());
+        Optional<String> token = jwtTokenManager.createToken(userProfile.get().getId());
+        if (token.isEmpty())
+            throw new PigeonManagerException(ErrorType.TOKEN_NOT_CREATED);
+        return toAuthResponseDto(userProfile.get().getId(),token.get());
     }
     public Page<UserResponseDto> getAllSharedByPostId(Long postId,
                                                       Optional<Integer> currentPage){

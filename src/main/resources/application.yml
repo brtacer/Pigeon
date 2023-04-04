@@ -1,0 +1,17 @@
+server:
+  port: 9092
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: ${postgresql_password}
+    url: jdbc:postgresql://localhost:5432/Pigeon
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
+
+
+

@@ -22,11 +22,11 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorMessage> handleException(Exception exception){
-//        ErrorType errorType= ErrorType.UNEXPECTED;
-//        return new ResponseEntity<>(createErrorMessage(errorType,exception),errorType.getHttpStatus());
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorMessage> handleException(Exception exception){
+        ErrorType errorType= ErrorType.UNEXPECTED;
+        return new ResponseEntity<>(createErrorMessage(errorType,exception),errorType.getHttpStatus());
+    }
     @ExceptionHandler(PigeonManagerException.class)
     public ResponseEntity<ErrorMessage> handleMyTwitterException(PigeonManagerException exception){
         ErrorType errorType=exception.getErrorType();
